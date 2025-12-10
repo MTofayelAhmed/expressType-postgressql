@@ -50,6 +50,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
+// users api post
 app.post("/users", async (req: Request, res: Response) => {
   const { name, email } = req.body;
 
@@ -73,6 +74,23 @@ res.status(201).json({
   
 });
 
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users`);
+
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: result.rows,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
-});
+})
