@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import { Pool } from "pg";
 
@@ -45,8 +45,16 @@ initDB();
 // parser
 app.use(express.json());
 app.use(express.urlencoded());
+// middleware
 
-app.get("/", (req: Request, res: Response) => {
+const logger = (req: Request, res: Response, next: NextFunction)=> {
+  console.log(`[${new Date().toISOString()}] ${req.method}${req.path}`)
+  next()
+}
+
+
+
+app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
