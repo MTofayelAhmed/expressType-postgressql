@@ -144,6 +144,34 @@ else {
   }
 })
 
+
+
+// DELETE API
+app.delete("/user/:id", async (req: Request, res: Response)=> {
+  try {
+const result = await pool.query(`DELETE FROM users WHERE id= $1 `, [req.params.id])
+ 
+if(result.rows.length == 0){
+  res.status(404).json({
+    message: "data not found"
+  })
+}
+else {
+  res.status(200).json({
+    success: true,
+    message: "Delete single data successfully",
+  
+  })
+}
+  }
+  catch(err: any){
+     res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })
