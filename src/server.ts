@@ -4,8 +4,8 @@ import express, { NextFunction, Request, Response } from "express";
 
 import config from "./config";
 import initDB, { pool } from "./config/db";
-
-
+import logger from "./middleware/logger";
+import { userRoutes } from "./module/user/user.routes";
 
 const app = express();
 const port = config.port;
@@ -17,57 +17,17 @@ app.use(express.json());
 app.use(express.urlencoded());
 // middleware
 
-const logger = (req: Request, res: Response, next: NextFunction)=> {
-  console.log(`[${new Date().toISOString()}] ${req.method}${req.path}`)
-  next()
-}
-
-
 
 app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-// users api post
-app.post("/users", async (req: Request, res: Response) => {
-  const { name, email } = req.body;
-
-  try {
-const result = await pool.query(`INSERT INTO users(name, email) VALUES($1, $2) RETURNING *`, [name,email])
-res.status(201).json({
-      success: true,
-      message: "data created successfully",
-      data: result.rows[0]
-    })
+// users CRUD
+app.use("/users", userRoutes)
 
 
-  }
-  catch (err: any){
-    res.status(500).json({
-      success: false,
-      message: err.message
-    })
-  }
 
-  
-});
 
-app.get("/users", async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query(`SELECT * FROM users`);
-
-    res.status(200).json({
-      success: true,
-      message: "Users fetched successfully",
-      data: result.rows
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-});
 
 // get api for single users 
 
