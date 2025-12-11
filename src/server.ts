@@ -151,7 +151,7 @@ app.delete("/user/:id", async (req: Request, res: Response)=> {
   try {
 const result = await pool.query(`DELETE FROM users WHERE id= $1 `, [req.params.id])
  
-if(result.rows.length == 0){
+if(result.rowCount == 0){
   res.status(404).json({
     message: "data not found"
   })
@@ -170,6 +170,15 @@ else {
       message: err.message,
     });
   }
+})
+
+// not found route 
+app.use((req, res)=> {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    path: req.path
+  })
 })
 
 app.listen(port, () => {
