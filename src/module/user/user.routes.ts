@@ -9,4 +9,8 @@ router.post("/", userController.createUser )
 // for get Routes
 router.get("/", userController.getUser)
 
+// get single users 
+
+router.get("/:id", userController.getSingleUser)
+
 export const userRoutes = router

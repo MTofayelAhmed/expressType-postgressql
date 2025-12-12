@@ -27,60 +27,13 @@ app.use("/users", userRoutes)
 
 
 
-
-
 // get api for single users 
+app.get("/users", userRoutes )
 
-app.get("/user/:id", async (req: Request, res: Response)=> {
-  try {
-const result = await pool.query(`SELECT * FROM users WHERE id= $1 `, [req.params.id])
- 
-if(result.rows.length == 0){
-  res.status(404).json({
-    message: "data not found"
-  })
-}
-else {
-  res.status(200).json({
-    success: true,
-    message: "fetched single data successfully",
-    data: result.rows[0]
-  })
-}
-  }
-  catch(err: any){
-     res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-})
-app.put("/user/:id", async (req: Request, res: Response)=> {
-const {name, email} = req.body
 
-  try {
-const result = await pool.query(`UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING * `, [name, email,req.params.id])
- 
-if(result.rows.length == 0){
-  res.status(404).json({
-    message: "data not found"
-  })
-}
-else {
-  res.status(200).json({
-    success: true,
-    message: "data update successfully",
-    data: result.rows[0]
-  })
-}
-  }
-  catch(err: any){
-     res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-})
+
+   
+app.put("/user/:id", userRoutes )
 
 
 
