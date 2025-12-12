@@ -27,13 +27,9 @@ app.use("/users", userRoutes)
 
 
 
-// get api for single users 
-app.get("/users", userRoutes )
-
-
-
-   
-app.put("/user/:id", userRoutes )
+// // get api for single users 
+// app.get("/users", userRoutes )
+// app.put("/users", userRoutes )
 
 
 
