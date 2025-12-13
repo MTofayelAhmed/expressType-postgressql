@@ -6,6 +6,7 @@ import config from "./config";
 import initDB, { pool } from "./config/db";
 import logger from "./middleware/logger";
 import { userRoutes } from "./module/user/user.routes";
+import { authRoute } from "./module/auth/auth.routes";
 
 const app = express();
 const port = config.port;
@@ -67,6 +68,14 @@ app.use((req, res)=> {
     path: req.path
   })
 })
+
+// todo crud operation 
+
+app.use("/auth", authRoute)
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
